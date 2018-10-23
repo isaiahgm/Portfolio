@@ -1,0 +1,395 @@
+From:	Mail Delivery Subsystem <D-MAILER@ldschurch.org>
+To:	lynellenugent@yahoo.com
+Sent:	Tuesday, September 25, 2018 8:01 PM
+Subject:	Undeliverable: Thank You for Your Time! - BYU
+
+The original message was received at Tue, 25 Sep 2018 20:00:48 -0600
+from chqpvul5211.gmhwh.org [127.0.0.1]
+
+   ----- The following addresses had permanent fatal errors -----
+<lynellenugent@yahoo.com>
+    (reason: 554 delivery error: dd Requested mail action aborted - mta4238.mail.ne1.yahoo.com)
+
+   ----- Transcript of session follows -----
+... while talking to mta6.am0.yahoodns.net.:
+>>> DATA
+<<< 554 delivery error: dd Requested mail action aborted - mta4238.mail.ne1.yahoo.com
+554 5.0.0 Service unavailable
+From:	Mail Delivery Subsystem <D-MAILER@ldschurch.org>
+To:	email2@domain.com
+Sent:	Tuesday, September 25, 2018 7:51 PM
+Subject:	Undeliverable: Thank You for Your Time! - BYU
+
+The original message was received at Tue, 25 Sep 2018 19:50:43 -0600
+from chqpvul5211.gmhwh.org [127.0.0.1]
+
+   ----- The following addresses had permanent fatal errors -----
+<email2@domain.com>
+    (reason: 554 5.7.1 [P4] Message blocked due to spam content in the message.)
+
+   ----- Transcript of session follows -----
+... while talking to mx.centurylink.net.:
+>>> DATA
+<<< 554 5.7.1 [P4] Message blocked due to spam content in the message.
+554 5.0.0 Service unavailable
+From:	Mail Delivery Subsystem <D-MAILER@ldschurch.org>
+To:	robyork.1@juno.com
+Sent:	Tuesday, September 25, 2018 7:15 PM
+Subject:	Undeliverable: Thank You for Your Time! - BYU
+
+The original message was received at Tue, 25 Sep 2018 19:15:28 -0600
+from chqpvul5211.gmhwh.org [127.0.0.1]
+
+   ----- The following addresses had permanent fatal errors -----
+<robyork.1@juno.com>
+    (reason: 550 robyork.1@juno.com Account Inactive)
+
+   ----- Transcript of session follows -----
+... while talking to mx.dca.untd.com.:
+>>> RCPT To:<robyork.1@juno.com>
+<<< 550 robyork.1@juno.com Account Inactive
+550 5.1.1 <robyork.1@juno.com>... User unknown
+>>> DATA
+<<< 503 Command out of sequence
+From:	Mail Delivery Subsystem <D-MAILER@ldschurch.org>
+To:	Mattrkress@byu.edu
+Sent:	Tuesday, September 25, 2018 5:55 PM
+Subject:	Undeliverable: Thank You for Your Time! - BYU
+
+The original message was received at Tue, 25 Sep 2018 17:55:02 -0600
+from mail11.gmhwh.org [127.0.0.1]
+
+   ----- The following addresses had permanent fatal errors -----
+<Mattrkress@byu.edu>
+    (reason: 550 5.1.1 <Mattrkress@byu.edu>... User unknown)
+
+   ----- Transcript of session follows -----
+... while talking to canmx3.byu.edu.:
+>>> DATA
+<<< 550 5.1.1 <Mattrkress@byu.edu>... User unknown
+550 5.1.1 <Mattrkress@byu.edu>... User unknown
+<<< 503 5.0.0 Need RCPT (recipient)
+From:	Mail Delivery Subsystem <D-MAILER@ldschurch.org>
+To:	chachuashimai@gmail.com
+Sent:	Friday, September 21, 2018 5:42 PM
+Subject:	Undeliverable: Thank You for Your Time! - BYU
+
+The original message was received at Fri, 21 Sep 2018 17:41:56 -0600
+from chqpvul5211.gmhwh.org [127.0.0.1]
+
+   ----- The following addresses had permanent fatal errors -----
+<chachuashimai@gmail.com>
+    (reason: 550-5.1.1 The email account that you tried to reach does not exist. Please try)
+
+   ----- Transcript of session follows -----
+... while talking to gmail-smtp-in.l.google.com.:
+>>> DATA
+<<< 550-5.1.1 The email account that you tried to reach does not exist. Please try
+<<< 550-5.1.1 double-checking the recipient's email address for typos or
+<<< 550-5.1.1 unnecessary spaces. Learn more at
+<<< 550 5.1.1  https://urldefense.proofpoint.com/v2/url?u=https-3A__support.google.com_mail_-3Fp-3DNoSuchUser&d=DwIBAg&c=z0adcvxXWKG6LAMN6dVEqQ&r=yTsDd0M3SJ3-wp4e3v1zXPHbIdUplQqiVqlsFX36X_k&m=4q2i0NQyJxqJ7ODEbmMpeET9kf66xPdJpMxK0dsr8aA&s=GqPjrZD3jYXrOdqJIJiAcEDd7CvWxL6wwkixddbjnEw&e= x7-v6si27952476pgi.465 - gsmtp
+550 5.1.1 <chachuashimai@gmail.com>... User unknown
+<<< 503 5.5.1 RCPT first. x7-v6si27952476pgi.465 - gsmtp
+From:	Mail Delivery Subsystem <D-MAILER@ldschurch.org>
+To:	banovik@byu.edu
+Sent:	Friday, September 21, 2018 4:06 PM
+Subject:	Undeliverable: Thank You for Your Time! - BYU
+
+The original message was received at Fri, 21 Sep 2018 16:06:28 -0600
+from chqpvul5212.gmhwh.org [127.0.0.1]
+
+   ----- The following addresses had permanent fatal errors -----
+<banovik@byu.edu>
+    (reason: 550 5.1.1 <banovik@byu.edu>... User unknown)
+
+   ----- Transcript of session follows -----
+... while talking to canmx3.byu.edu.:
+>>> DATA
+<<< 550 5.1.1 <banovik@byu.edu>... User unknown
+550 5.1.1 <banovik@byu.edu>... User unknown
+<<< 503 5.0.0 Need RCPT (recipient)
+From:	Mail Delivery Subsystem <D-MAILER@ldschurch.org>
+To:	email3@domain3.com
+Sent:	Thursday, September 20, 2018 5:18 PM
+Subject:	Undeliverable: Thank You for Your Time! - BYU
+
+The original message was received at Thu, 20 Sep 2018 17:18:19 -0600
+from chqpvul5211.gmhwh.org [127.0.0.1]
+
+   ----- The following addresses had permanent fatal errors -----
+<email3@domain3.com>
+    (reason: 554 5.7.1 [P4] Message blocked due to spam content in the message.)
+
+   ----- Transcript of session follows -----
+... while talking to mx.centurylink.net.:
+>>> DATA
+<<< 554 5.7.1 [P4] Message blocked due to spam content in the message.
+554 5.0.0 Service unavailable
+From:	Mail Delivery Subsystem <D-MAILER@ldschurch.org>
+To:	stephholt84@haotmail.com
+Sent:	Thursday, September 20, 2018 3:55 PM
+Subject:	Undeliverable: Missed Phone Call - Marriott School
+
+The original message was received at Sat, 15 Sep 2018 15:51:34 -0600
+from chqpvul5211.gmhwh.org [127.0.0.1]
+
+   ----- The following addresses had permanent fatal errors -----
+<stephholt84@haotmail.com>
+
+   ----- Transcript of session follows -----
+<stephholt84@haotmail.com>... Deferred: Connection timed out with haotmail.com.
+Message could not be delivered for 5 days
+Message will be deleted from queue
+From:	Mail Delivery Subsystem <D-MAILER@ldschurch.org>
+To:	cary@ashbysplace.com
+Sent:	Thursday, September 20, 2018 12:37 PM
+Subject:	Undeliverable: Missed Phone Call - Marriott School
+
+The original message was received at Sat, 15 Sep 2018 12:03:32 -0600
+from chqpvul5212.gmhwh.org [127.0.0.1]
+
+   ----- The following addresses had permanent fatal errors -----
+<cary@ashbysplace.com>
+
+   ----- Transcript of session follows -----
+<cary@ashbysplace.com>... Deferred: Connection timed out with hdredirect-lb3-890977680.us-east-1.elb.amazonaws.com.
+Message could not be delivered for 5 days
+Message will be deleted from queue
+From:	Mail Delivery Subsystem <D-MAILER@ldschurch.org>
+To:	troy@betteratmservices.com
+Sent:	Thursday, September 20, 2018 12:41 PM
+Subject:	Undeliverable: Missed Phone Call - Marriott School
+
+The original message was received at Sat, 15 Sep 2018 12:29:04 -0600
+from chqpvul5212.gmhwh.org [127.0.0.1]
+
+   ----- The following addresses had permanent fatal errors -----
+<troy@betteratmservices.com>
+
+   ----- Transcript of session follows -----
+<troy@betteratmservices.com>... Deferred: Name server: betteratmservices.com.: host name lookup failure
+Message could not be delivered for 5 days
+Message will be deleted from queue
+From:	Mail Delivery Subsystem <D-MAILER@ldschurch.org>
+To:	sandberg@dynamicfeedback.com
+Sent:	Thursday, September 20, 2018 12:36 PM
+Subject:	Undeliverable: Missed Phone Call - Marriott School
+
+The original message was received at Sat, 15 Sep 2018 12:13:43 -0600
+from mail11.gmhwh.org [127.0.0.1]
+
+   ----- The following addresses had permanent fatal errors -----
+<sandberg@dynamicfeedback.com>
+
+   ----- Transcript of session follows -----
+<sandberg@dynamicfeedback.com>... Deferred: Connection timed out with hdredirect-lb3-890977680.us-east-1.elb.amazonaws.com.
+Message could not be delivered for 5 days
+Message will be deleted from queue
+From:	Mail Delivery Subsystem <D-MAILER@ldschurch.org>
+To:	pshs.jdame@state.ut.us
+Sent:	Thursday, September 20, 2018 10:52 AM
+Subject:	Undeliverable: Missed Phone Call - Marriott School
+
+The original message was received at Sat, 15 Sep 2018 09:51:18 -0600
+from chqpvul5212.gmhwh.org [127.0.0.1]
+
+   ----- The following addresses had permanent fatal errors -----
+<pshs.jdame@state.ut.us>
+
+   ----- Transcript of session follows -----
+<pshs.jdame@state.ut.us>... Deferred: Connection timed out with state-gate.state.ut.us.
+Message could not be delivered for 5 days
+Message will be deleted from queue
+From:	Mail Delivery Subsystem <D-MAILER@ldschurch.org>
+To:	richard@e-b.com
+Sent:	Thursday, September 20, 2018 9:58 AM
+Subject:	Undeliverable: Missed Phone Call - Marriott School
+
+The original message was received at Sat, 15 Sep 2018 09:56:23 -0600
+from chqpvul5211.gmhwh.org [127.0.0.1]
+
+   ----- The following addresses had permanent fatal errors -----
+<richard@e-b.com>
+
+   ----- Transcript of session follows -----
+<richard@e-b.com>... Deferred: Connection refused by e-b.com.
+Message could not be delivered for 5 days
+Message will be deleted from queue
+From:	Mail Delivery Subsystem <D-MAILER@ldschurch.org>
+To:	michael@wilkinsonclan.com
+Sent:	Wednesday, September 19, 2018 5:28 PM
+Subject:	Undeliverable: Missed Phone Call - Marriott School
+
+The original message was received at Fri, 14 Sep 2018 17:07:37 -0600
+from chqpvul5211.gmhwh.org [127.0.0.1]
+
+   ----- The following addresses had permanent fatal errors -----
+<michael@wilkinsonclan.com>
+
+   ----- Transcript of session follows -----
+<michael@wilkinsonclan.com>... Deferred: Connection timed out with wilkinsonclan.com.
+Message could not be delivered for 5 days
+Message will be deleted from queue
+From:	Mail Delivery Subsystem <D-MAILER@ldschurch.org>
+To:	shane@4cornerstones.com
+Sent:	Wednesday, September 19, 2018 5:16 PM
+Subject:	Undeliverable: Missed Phone Call - Marriott School
+
+The original message was received at Fri, 14 Sep 2018 17:07:36 -0600
+from mail11.gmhwh.org [127.0.0.1]
+
+   ----- The following addresses had permanent fatal errors -----
+<shane@4cornerstones.com>
+
+   ----- Transcript of session follows -----
+<shane@4cornerstones.com>... Deferred: Connection timed out with hdredirect-lb3-890977680.us-east-1.elb.amazonaws.com.
+Message could not be delivered for 5 days
+Message will be deleted from queue
+From:	Mail Delivery Subsystem <D-MAILER@ldschurch.org>
+To:	kenneth.lane@copernicuscapital.com
+Sent:	Wednesday, September 19, 2018 4:18 PM
+Subject:	Undeliverable: Missed Phone Call - Marriott School
+
+The original message was received at Fri, 14 Sep 2018 16:12:07 -0600
+from chqpvul5211.gmhwh.org [127.0.0.1]
+
+   ----- The following addresses had permanent fatal errors -----
+<kenneth.lane@copernicuscapital.com>
+
+   ----- Transcript of session follows -----
+<kenneth.lane@copernicuscapital.com>... Deferred: Connection timed out with hdredirect-lb3-890977680.us-east-1.elb.amazonaws.com.
+Message could not be delivered for 5 days
+Message will be deleted from queue
+From:	Mail Delivery Subsystem <D-MAILER@ldschurch.org>
+To:	karlabean@jimmyeatworld.net
+Sent:	Wednesday, September 19, 2018 3:57 PM
+Subject:	Undeliverable: Missed Phone Call - Marriott School
+
+The original message was received at Fri, 14 Sep 2018 15:56:39 -0600
+from chqpvul5211.gmhwh.org [127.0.0.1]
+
+   ----- The following addresses had permanent fatal errors -----
+<karlabean@jimmyeatworld.net>
+    (reason: 454 4.7.1 <karlabean@jimmyeatworld.net>: Relay access denied)
+
+   ----- Transcript of session follows -----
+... while talking to mx.sendgrid.net.:
+>>> DATA
+<<< 454 4.7.1 <karlabean@jimmyeatworld.net>: Relay access denied
+<karlabean@jimmyeatworld.net>... Deferred: 454 4.7.1 <karlabean@jimmyeatworld.net>: Relay access denied
+<<< 554 5.5.1 Error: no valid recipients
+Message could not be delivered for 5 days
+Message will be deleted from queue
+From:	Mail Delivery Subsystem <D-MAILER@ldschurch.org>
+To:	contact@johnslavensforcongress.com
+Sent:	Tuesday, September 18, 2018 9:20 PM
+Subject:	Undeliverable: Thank You for Your Gift! - Marriott School
+
+The original message was received at Thu, 13 Sep 2018 20:43:14 -0600
+from chqpvul5211.gmhwh.org [127.0.0.1]
+
+   ----- The following addresses had permanent fatal errors -----
+<contact@johnslavensforcongress.com>
+
+   ----- Transcript of session follows -----
+<contact@johnslavensforcongress.com>... Deferred: Connection timed out with johnslavensforcongress.com.
+Message could not be delivered for 5 days
+Message will be deleted from queue
+From:	Mail Delivery Subsystem <D-MAILER@ldschurch.org>
+To:	stephholt84@haotmail.com
+Sent:	Saturday, September 15, 2018 8:55 PM
+Subject:	Delivery delayed:Missed Phone Call - Marriott School
+
+    **********************************************
+    **      THIS IS A WARNING MESSAGE ONLY      **
+    **  YOU DO NOT NEED TO RESEND YOUR MESSAGE  **
+    **********************************************
+
+The original message was received at Sat, 15 Sep 2018 15:51:34 -0600
+from chqpvul5211.gmhwh.org [127.0.0.1]
+
+   ----- Transcript of session follows -----
+<stephholt84@haotmail.com>... Deferred: Connection timed out with haotmail.com.
+Warning: message still undelivered after 4 hours
+Will keep trying until message is 5 days old
+From:	Mail Delivery Subsystem <D-MAILER@ldschurch.org>
+To:	troy@betteratmservices.com
+Sent:	Saturday, September 15, 2018 5:16 PM
+Subject:	Delivery delayed:Missed Phone Call - Marriott School
+
+    **********************************************
+    **      THIS IS A WARNING MESSAGE ONLY      **
+    **  YOU DO NOT NEED TO RESEND YOUR MESSAGE  **
+    **********************************************
+
+The original message was received at Sat, 15 Sep 2018 12:29:04 -0600
+from chqpvul5212.gmhwh.org [127.0.0.1]
+
+   ----- Transcript of session follows -----
+<troy@betteratmservices.com>... Deferred: Name server: betteratmservices.com.: host name lookup failure
+Warning: message still undelivered after 4 hours
+Will keep trying until message is 5 days old
+From:	Mail Delivery Subsystem <D-MAILER@ldschurch.org>
+To:	sandberg@dynamicfeedback.com
+Sent:	Saturday, September 15, 2018 5:18 PM
+Subject:	Delivery delayed:Missed Phone Call - Marriott School
+
+    **********************************************
+    **      THIS IS A WARNING MESSAGE ONLY      **
+    **  YOU DO NOT NEED TO RESEND YOUR MESSAGE  **
+    **********************************************
+
+The original message was received at Sat, 15 Sep 2018 12:13:43 -0600
+from mail11.gmhwh.org [127.0.0.1]
+
+   ----- Transcript of session follows -----
+<sandberg@dynamicfeedback.com>... Deferred: Connection timed out with hdredirect-lb3-890977680.us-east-1.elb.amazonaws.com.
+Warning: message still undelivered after 4 hours
+Will keep trying until message is 5 days old
+From:	Mail Delivery Subsystem <D-MAILER@ldschurch.org>
+To:	cary@ashbysplace.com
+Sent:	Saturday, September 15, 2018 4:07 PM
+Subject:	Delivery delayed:Missed Phone Call - Marriott School
+
+    **********************************************
+    **      THIS IS A WARNING MESSAGE ONLY      **
+    **  YOU DO NOT NEED TO RESEND YOUR MESSAGE  **
+    **********************************************
+
+The original message was received at Sat, 15 Sep 2018 12:03:32 -0600
+from chqpvul5212.gmhwh.org [127.0.0.1]
+
+   ----- Transcript of session follows -----
+<cary@ashbysplace.com>... Deferred: Connection timed out with hdredirect-lb3-890977680.us-east-1.elb.amazonaws.com.
+Warning: message still undelivered after 4 hours
+Will keep trying until message is 5 days old
+From:	Mail Delivery Subsystem <D-MAILER@ldschurch.org>
+To:	mcdonnel@verizon.net
+Sent:	Saturday, September 15, 2018 3:57 PM
+Subject:	Undeliverable: Missed Phone Call - Marriott School
+
+The original message was received at Sat, 15 Sep 2018 15:56:39 -0600
+from chqpvul5211.gmhwh.org [127.0.0.1]
+
+   ----- The following addresses had permanent fatal errors -----
+<mcdonnel@verizon.net>
+    (reason: 554 delivery error: dd This user doesn't have a verizon.net account (mcdonnel@verizon.net) [0] - mta4169.aol.mail.bf1.yahoo.com)
+
+   ----- Transcript of session follows -----
+... while talking to mx-aol.mail.gm0.yahoodns.net.:
+>>> DATA
+<<< 554 delivery error: dd This user doesn't have a verizon.net account (mcdonnel@verizon.net) [0] - mta4169.aol.mail.bf1.yahoo.com
+554 5.0.0 Service unavailable
+From:	Mail Delivery Subsystem <D-MAILER@ldschurch.org>
+To:	email4@domain4.com
+Sent:	Saturday, September 15, 2018 3:52 PM
+Subject:	Undeliverable: Missed Phone Call - Marriott School
+
+The original message was received at Sat, 15 Sep 2018 15:51:34 -0600
+from chqpvul5212.gmhwh.org [127.0.0.1]
+
+   ----- The following addresses had permanent fatal errors -----
+<email4@domain4.com>
+    (reason: 552 5.2.0 1ITWg1MBvXSaU - 1ITWg1MBvXSaU1ITWgSHLq This message has been rejected due to content judge...e following page. <https://urldefense.proofpoint.com/v2/url?u=https-3A__checkspam.secureserver.net_-3Fsid-3D1ITWg1MBvXSaU-26mid-3D1ITWg1MBvXSaU1ITWgSHLq&d=DwIBAg&c=z0adcvxXWKG6LAMN6dVEqQ&r=yTsDd0M3SJ3-wp4e3v1zXPHbIdUplQqiVqlsFX36X_k&m=-YY381FvYVJOJU2GyCikvixNtdRhAaYYtY3mPOlGGLs&s=5cDKpkSpwBEThUVoiI9G81fuKCqvV8kBsyAIKo3Fa2g&e=>)
+
+
