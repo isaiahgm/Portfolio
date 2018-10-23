@@ -1,0 +1,17 @@
+Part B
+
+This list of samples meets all of the requirements of an ANOVA test: they are independently collected (randomly selected), they are sample from a
+normal population (rnorm), and the samples have homoscedasticity because they all come from a rnorm with sd = 1. 
+
+The null hypothesis is true in this case as none of the sample means should be different as they are drawn from a normal population with mean = 0.
+The pvalues are in fact uniformly distributed
+
+Part C
+
+In this case the normal population assumption is violated as the third population samples from a non-normal population, but the other two are met
+The size of the test decreases with greater sample sizes
+
+Part D
+
+The ANOVA conditions are met in all cases except for where the standard deviation becomes 3.0 which violates the equal variance assumption.
+In general having a larger sample size helped improve the size of the test.

@@ -1,0 +1,13 @@
+drug                         cost  benefit
+Sorafenib                  140984   86.21
+Crizotinib                 156544  156.67
+Obinutuzumab                74304  107.21
+Afatinib                    79920   60.87
+Trametinib                 125820  220.00
+Dabrefenib                 109440   88.89
+Erlotinib                   82827  100.00
+Ado-trastuzumabEmtansine   113161   50.00
+Bevacizumab                 59422   42.50
+Cabozantinib               118800  180.00
+Regorafenib                141372   17.65
+

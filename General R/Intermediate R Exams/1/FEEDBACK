@@ -1,0 +1,15 @@
+Core Function (8/10)
+You sampled H0 correctly, and did it concisely! Good job. 
+However, you should use the alternative probabilities in the sample() function when 
+sampling under the alternative. This affects your power calculation.
+Critical Value (3/4)
+You don't need to add 1, you just need to add a small enough values for the type I error 
+rate to be less than or equal to alpha. Additionally, the critical value is only calculated under Ho
+P-value (4/6)
+It would be correct to use pchisq() if we were not doing a monte carlo study. Use your simulated values to calculate the p-value.
+Power (6)
+You set it up right, but the output is off because of previously mentioned issues.
+Coding Rules (2)
+I like the comments. When making a vector for a confidence interval, 
+I would not use cbind(), as it is just a one-dimensional object. Just use c() and make a vector
+Total (23/28)

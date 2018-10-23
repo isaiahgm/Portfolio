@@ -1,0 +1,16 @@
+Choose 4:
+you didn't assess monte carlo error for the proportions or the means. To assess monte carlo error means to provide a confidence interval on the estimate.  
+
+the answers to your means weren't correct. i think it's because you set the default probabilities in your function incorrectly (see line 3). first, probabilities should be between
+0 and 1; you set them to 1 through 4. Second, if the probabilities in your sample function are all going to be equal, you don't have to specify what the probabilities are; the 
+sample function will do it itself. :)
+
+lastly, the computation you did to find out the proportion of times you had to buy 14 or more boxes didn't work. Essentially, you should've taken your vector containing all the 
+monte carlo simulation results (all the total numbers of boxes everybody had to buy to collect all 4) and figured out how many of those trials required the person to buy 14 or more 
+boxes. then, you take that number and divide it by the total number of trials. That is your proportion of people who had to buy 14 or more boxes. 
+
+Sorry if that didn't make sense. if you come into TA hours, one of us can explain it to you better than the written explanation here. :)
+
+Overall though, you did a great job! Just a couple of tweeks and it will be perfect. 
+
+Birthday:

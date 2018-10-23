@@ -1,0 +1,6 @@
+Cheese: Looks good! No need to set working directory. Just make sure that .csv files are in the same folder as the script and it will work. (10)
+
+Clothes: In the future, only use the filename to read in the data, ie. just
+read.csv("clothes.csv", ...) (10)
+
+Fibonacci: No fib.R (0)

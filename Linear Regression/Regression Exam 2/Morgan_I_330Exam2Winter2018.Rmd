@@ -1,0 +1,295 @@
+---
+title: "Exam 2 - Stat 330"
+author: "Isaiah Morgan"
+date: "April 10, 2018"
+output: pdf_document
+---
+
+On an annual basis, each county Assessor is required by Utah law to list and value on
+an assessment roll all property subject to *ad valorem* taxation. Iron County is located
+in southwest Utah approximately 265 miles south of Salt Lake City, UT and 170 miles
+north of Las Vegas, NV on the I-15 corridor. The Iron County Assessor's office assesses
+values on approximately 35,000 parcels of property on approximately 620,000 acres.
+
+The data file 'ironco.txt' contains data on selling price for various properties, as well
+as information on covariates that may be related to selling price.  The columns are described
+below:
+
+1. price - selling price of the property
+2. lot - lot acreage
+3. floors - number of floors (not including basement)
+4. const - assessed construction quality on a scale of 1 (poor) to 4 (excellent)
+5. roof - assessed roof condition on a scale of 1 (poor) to 4 (excellent)
+6. build - assessed home condition on a scale of 1 (poor) to 4 (excellent)
+7. area - square footage of home
+8. yr.built - year the home was built
+9. eff.age - evaluation by the assessor of the home's equivalent market age
+10. baths - number of full bathrooms
+11. gar - indicator for presence of a garage
+12. basmt - indicator of presence of a basement
+
+A model is desired for predicting the selling price of a residential property based
+on property characteristics.
+
+The purpose of this exam is to demonstrate that you can step through the model building process.  The exam
+will be due at 9:30 am on Tuesday, April 10, and should be turned in via email.  Please do your work in an .Rmd file so that code will accompany answers.  Hand in **_both_** your .Rmd file and either a .pdf or an .html file.  Please
+name the files 'your_last_name_330Exam2Winter2018' with the appropriate extension.
+
+1. Read in the data, and fit a model that estimates price using area, baths, and lot.  What are 
+the $\hat\beta$'s?
+```{r}
+setwd('C:/Users/imoe9/Documents/School Work/STAT PROG/R Files/STAT 330/Exam2')
+ironco <- read.table('ironco.txt', header = TRUE)
+attach(ironco)
+
+fit <- lm(price ~ area + baths + lot)
+coef(fit)
+```
+
+2.  Produce a pairs plot with price, area, baths, and lot.  
+```{r}
+pairs(cbind(price, area, baths, lot))
+```
+
+3.  Is there anything in the relationship of price with area, or price with lot that might be a
+concern?
+
+The relationship between price and area appears to be linear; however, it appears that the variance may not be constant. Price with lot
+does not appear linear which may need to be transformed to fit better
+
+4.  Show the four plots that R provides as a default option to examine assumptions about the data.
+```{r}
+par(mfrow = c(2,2))
+plot(fit)
+```
+
+5.  Find the fitted values and the square root of the absolute value of the standardized residuals for this model.  Plot the fitted values on the x-axis and the square root of the absolute value of the standarized residuals on the y-axis.
+```{r}
+par(mfrow = c(1,1))
+fitpt <- fitted(fit)
+fitres <- resid(fit)
+sqabsres <- sqrt(abs(fitres))
+
+plot(fitpt, sqabsres)
+```
+
+
+6. Produce a linear model to estimate the square root of the absolute value of the standardized residuals as 
+a function of the fitted values.  What are the $\hat{\beta}$'s?
+```{r}
+fit.asr <- lm(sqabsres ~ fitpt)
+coef(fit.asr)
+```
+
+7. Is the slope of the estimated line in number 6 significantly different from 0?  What is the
+t-value of the test of this null hypothesis?
+```{r}
+summary(fit.asr)
+```
+The slope of the line is significantly different from 0 (p < 0.0001) with a t-stat of 5.739 
+
+8.  What does the result from 7 indicate might be a problem?
+
+This significant slope indicates expanding variance which invalidates the model.
+
+9.  Plot the fitted values (on the x-axis) against the actual values of the price.
+```{r}
+plot(fitpt, price)
+```
+
+10.  Given the results we have seen thus far, we might consider tranforming some of the variables.  Does the 
+Box-Cox procedure indicate a transformation on price might be a good idea?  If so, what transformation would
+you suggest?
+```{r}
+library(alr3)
+boxCox(fit)
+```
+The BoxCox suggests that we should take the sqrt of the data.
+
+11.  Perhaps we may want to consider transforming some of the x-variables.  Using only those variables in
+the command, what transformations, if any, 
+would you suggest for lot, area, eff.age, and baths?
+```{r}
+powerTransform(cbind(lot,area,eff.age,baths))
+```
+The power transform of those variables suggests that a sqrt of both lot and eff.age would be appropriate; as well as a negative sqrt for area 
+and a third root of baths.
+
+12.  Now fit a model to predict the square root of price (sqprice) with the following x's: lot, area, square root of baths (sqbaths), gar, floors, basmt, const, roof, build, square root of effective age (sqage).  What term has the largest p-value and what is the p-value?
+```{r}
+fitfull <- lm(sqrt(price) ~ lot + area + sqrt(baths) + gar + floors + basmt + const
+              + roof + build + sqrt(eff.age))
+summary(fitfull)
+```
+Floors has the largest p value at p = 0.944
+
+13.  Now plot the fitted values from this model (on the x-axis) and the actual square root of price on the y-axis.
+```{r}
+fitpt.full <- fitted(fitfull)
+plot(fitpt.full, sqrt(price))
+```
+
+
+14. Show the four plots that R provides as a default option to examine assumptions about the data.
+```{r}
+par(mfrow=c(2,2))
+plot(fitfull)
+```
+
+15.  The normal qqplot of the standardized residuals shows something that is a concern.  What is it?
+
+The QQ plot indicates especially large tails in this data which could invalidate our predictions based off a 
+normal distribution.
+
+16.  Are there any observations for which the values of Cook's distance that might be a concern?
+
+There are no points which exceed cooks distance given the leverage plot above. However, point 71 is close to
+exceeding.
+
+17.  Are there any x variables with variance inflation factors that are a concern?
+```{r}
+vif(fitfull)
+```
+None of these variance inflation factors exceed the standard limit of 5, so I would say that none of them are of great concern.
+
+
+18.  Now I want you to split the data into a test set and a training set.  Use the following commands to split
+the data randomly into two groups.  For my example code, I will assume your data set is called 'newdata'.
+
+```{r}
+set.seed(0)
+aa <- 1:164
+trainset <- sample(aa,100)
+traindata <- ironco[trainset,]
+testdata <- ironco[-trainset,]
+detach(ironco)
+```
+
+These lines of code will give you two data sets.  One with 100 observations that we will use to develop possible
+models that we would use to predict, and one with 64 observations that we will use to test the models.
+Using the training data set, run the full model.  Show a summary of the model.
+```{r}
+sqrtprice <- sqrt(traindata$price)
+sqrtbaths <- sqrt(traindata$baths)
+sqrtage <- sqrt(traindata$eff.age)
+fulltrain <- lm(sqrtprice ~ lot + area + sqrtbaths + gar + floors + basmt + const + roof +
+                build + sqrtage, data = traindata)
+summary(fulltrain)
+```
+
+
+19.  Using this model as the base model, do a stepwise procedure going backward and using AIC as the criterion.  What terms are in the best model?
+```{r}
+library(MASS)
+stepAIC(fulltrain, direction = 'backward')
+```
+From this procedure the best model includes lot, area, basmt, roof, and sqrtage.
+
+20.  Print a summary of this model.
+```{r}
+fit1 <- lm(sqrtprice ~ lot + area + basmt + roof + sqrtage, data = traindata)
+summary(fit1)
+```
+
+21.  Run the same stepwise procedure going backward and use BIC as the criterion.  What terms are in the best 
+model now?
+```{r}
+stepAIC(fulltrain, k = log(100), direction = 'backward')
+```
+This procedure says the best model is the one including lot, area, basmt, roof, and sqrtage which is the same as the previous procedure.
+
+
+22.  Now run the stepwise procedure building up from only the intercept and using BIC as the criterion.  
+What are the terms in the best model now?
+```{r}
+mintrain <- lm(sqrtprice ~ 1)
+attach(traindata)
+stepAIC(mintrain, k = log(100), direction = 'forward', scope=list(lower = ~1, 
+        upper = ~lot + area + sqrtbaths + gar + floors + basmt + const + roof +
+        build + sqrtage))
+
+```
+This procedure suggests that the best model includes only area, basmt, and roof.
+
+
+23.  Using an all possible subsets regression with Adj R^2 as the criterion, what terms are in the best model?
+```{r}
+library(leaps)
+y <- sqrtprice 
+x <- as.matrix(cbind(lot, area, sqrtbaths, gar, floors, basmt, const, roof, build, sqrtage))
+names <- c('lot', 'area', 'sqrtbaths', 'gar', 'floors', 'basmt', 'const',
+           'roof', 'build', 'sqrtage')
+
+
+leaps(x,y,nbest = 1, names = names, method = 'adjr2')
+```
+This procedure suggests that the model should include lot, area, basmt, roof, anad sqrtage.
+
+24.  Now we are going to compare three models, to see which one predicts sqprice best in the test set.
+Model 1 has lot, area, sqbaths, floors, basmt, roof, and sqage.  Fit this model, and use it to predict
+sqprice in the test data set.  What is the error sum of squares for the true values minus the predicted values?
+```{r}
+detach(traindata)
+attach(testdata)
+tsqrtprice <- sqrt(testdata$price)
+tsqrtbaths <- sqrt(testdata$baths)
+tsqrtage <- sqrt(testdata$eff.age)
+
+model1 <- lm(sqrtprice ~ lot + area + sqrtbaths + floors + basmt + roof + sqrtage, data = traindata)
+
+X1test <- cbind(1, lot, area, tsqrtbaths, floors, basmt, roof, tsqrtage)
+yhattest1 <- X1test %*% coef(model1)
+m1SSE <- sum((tsqrtprice - yhattest1)^2)
+m1SSE
+```
+ 
+25.  Model 2 has lot, area, basmt, roof, sqage.  Fit this model and use it to predict sqprice in the test data set.  What is the error sum of squares (SSE) for the true values minus the predicted values?
+```{r}
+model2 <- lm(sqrtprice ~ lot + area + basmt + roof + sqrtage, data = traindata)
+
+X2test <- cbind(1, lot, area, basmt, roof, tsqrtage)
+yhattest2 <- X2test %*% coef(model2)
+m2SSE <- sum((tsqrtprice - yhattest2)^2)
+m2SSE
+```
+ 
+26.  Model 3 has area, basmt, and roof.  Fit this model and use it to predict sqprice in the test data set.  What is the error sum of squares for the true values minus the predicted values?
+```{r}
+model3 <- lm(sqrtprice ~area + basmt + roof, data = traindata)
+
+X3test <- cbind(1, area, basmt, roof)
+yhattest3 <- X3test %*% coef(model3)
+m3SSE <- sum((tsqrtprice - yhattest3)^2)
+m3SSE
+```
+ 
+27.  Now find the median absolute deviation for model 1.
+```{r}
+medabsd1 <- median(tsqrtprice - yhattest1)
+medabsd1
+```
+ 
+28.  Now find the median absolute deviation for model 2.
+```{r}
+medabsd2 <- median(tsqrtprice - yhattest2)
+medabsd2
+```
+ 
+29.  Now find the median absolute deviation (MAD) for model 3.
+```{r}
+medabsd3 <- median(tsqrtprice - yhattest3)
+medabsd3
+```
+ 
+30.  Which model predicts the best using SSE?
+```{r}
+which.min(c(m1SSE, m2SSE, m3SSE))
+```
+According to SSE method, the first model is the best predictor.
+
+31. Which model predicts the best using MAD?
+```{r}
+which.min(c(medabsd1,medabsd2,medabsd3))
+```
+
+According to MAD, the second model is the best predictor

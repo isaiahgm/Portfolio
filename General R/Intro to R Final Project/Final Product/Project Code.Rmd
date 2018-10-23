@@ -1,0 +1,147 @@
+---
+title: "Project Code"
+author: "Isaiah Morgan"
+date: "February 26, 2018"
+output: word_document
+---
+
+```{r}
+# Read in Data:
+library(dplyr)
+library(knitr)
+options(xtable.floating = FALSE)
+options(xtable.timestamp = "")
+
+DomainA <- read.csv('C:/Users/imoe9/Documents/School Work/STAT PROG/R Files/STAT 123/Project/Data.and.Domains/Domains FormA.csv')
+DomainB <- read.csv('C:/Users/imoe9/Documents/School Work/STAT PROG/R Files/STAT 123/Project/Data.and.Domains/Domains FormB.csv')
+FormA <- read.csv('C:/Users/imoe9/Documents/School Work/STAT PROG/R Files/STAT 123/Project/Data.and.Domains/FormA.csv', header = FALSE, stringsAsFactors = FALSE)
+FormB <- read.csv('C:/Users/imoe9/Documents/School Work/STAT PROG/R Files/STAT 123/Project/Data.and.Domains/FormB.csv', header = FALSE, stringsAsFactors = FALSE)
+
+DomainA <- tbl_df(DomainA)
+DomainB <- tbl_df(DomainB)
+FormA <- tbl_df(FormA)
+FormB <- tbl_df(FormB)
+
+# Student Scores
+
+Scores <- function(Form) {
+  score <- 0
+  percentage <- 0
+  for(i in 1:nrow(Form)) {
+    score[i] <- sum(Form[1,-1] == Form[i,-1])
+    percentage[i] <-  sum(Form[1,-1] == Form[i,-1]) / (ncol(Form) - 1)
+  }
+  return(score)
+}
+
+ScoreA <- Scores(FormA)
+ScoreA <- ScoreA[-1]
+PercentagesA <- ScoreA / (ncol(FormA) - 1)
+
+ScoreB <- Scores(FormB)
+ScoreB <- ScoreB[-1]
+PercentagesB <- ScoreB / (ncol(FormB) - 1)
+
+
+# Domain Scores
+Domac <- rbind(NA,DomainA)
+FormAD <- cbind(t(FormA), Domac)
+Dombc <- rbind(NA, DomainB)
+FormBD <- cbind(t(FormB), Dombc)
+
+DScore <- function(Form, PF, x) {
+  fil <- Form %>% filter(Domain.. == x | NA)
+  red <- cbind(PF[,1],t(fil[,1:(length(Form)-4)]))
+  Dsco <- Scores(red)
+  return(Dsco)
+}
+
+DomainScoreA <- cbind(DScore(FormAD,FormA, 1),DScore(FormAD,FormA, 2),DScore(FormAD,FormA, 3),DScore(FormAD,FormA, 4),DScore(FormAD,FormA, 5))
+DomainScoreB <- cbind(DScore(FormBD,FormB, 1),DScore(FormBD,FormB, 2),DScore(FormBD,FormB, 3),DScore(FormBD,FormB, 4),DScore(FormBD,FormB, 5))
+
+DomainPerA <- cbind(DScore(FormAD,FormA, 1),DScore(FormAD,FormA, 2),DScore(FormAD,FormA, 3),DScore(FormAD,FormA, 4),DScore(FormAD,FormA, 5))
+DomainPerB <- cbind(DScore(FormBD,FormB, 1),DScore(FormBD,FormB, 2),DScore(FormBD,FormB, 3),DScore(FormBD,FormB, 4),DScore(FormBD,FormB, 5))
+
+DomainPerA <- cbind(DomainScoreA[,1] / DomainScoreA[1,1],DomainScoreA[,2] / DomainScoreA[1,2],DomainScoreA[,3] / DomainScoreA[1,3],
+                    DomainScoreA[,4] / DomainScoreA[1,4],DomainScoreA[,5] / DomainScoreA[1,5])
+DomainPerB <- cbind(DomainScoreB[,1] / DomainScoreB[1,1],DomainScoreB[,2] / DomainScoreB[1,2],DomainScoreB[,3] / DomainScoreB[1,3],
+                    DomainScoreB[,4] / DomainScoreB[1,4],DomainScoreB[,5] / DomainScoreB[1,5])
+
+# Section A
+
+#table with student name, exam form, score, percentage, domain scores and percentages
+tbla <- cbind(FormA[-1,1],"A",ScoreA,PercentagesA,DomainScoreA[-1,],DomainPerA[-1,])
+colnames(tbla) <-  c("StudentID","Form","Score","Percentage","DScore 1","DScore 2","DScore 3","DScore 4","DScore 5",
+                     "D% 1","D% 2","D% 3","D% 4","D% 5")
+tbla <- tbl_df(tbla)
+
+tblb <- cbind(FormB[-1,1],"B",ScoreB,PercentagesB,DomainScoreB[-1,],DomainPerB[-1,])
+colnames(tblb) <- c("StudentID","Form","Score","Percentage","DScore 1","DScore 2","DScore 3","DScore 4","DScore 5",
+                    "D% 1","D% 2","D% 3","D% 4","D% 5")
+tblb <- tbl_df(tblb)
+
+
+tbl1 <- rbind(tbla,tblb)
+tbl1$StudentID <- as.numeric(tbl1$StudentID) 
+tbl1 <- arrange(tbl1, StudentID)
+tbl1$StudentID <- sprintf("%1.f", tbl1$StudentID)
+tbl1$Percentage <- sprintf("%1.1f%%", 100*tbl1$Percentage)
+tbl1[,10] <- sprintf("%1.1f%%", 100*tbl1$`D% 1`)
+tbl1[,11] <- sprintf("%1.1f%%", 100*tbl1$`D% 2`)
+tbl1[,12] <- sprintf("%1.1f%%", 100*tbl1$`D% 3`)
+tbl1[,13] <- sprintf("%1.1f%%", 100*tbl1$`D% 4`)
+tbl1[,14] <- sprintf("%1.1f%%", 100*tbl1$`D% 5`)
+
+tbl2 <- arrange(tbl1, desc(Percentage))
+tbl2 <- tbl2[,c(4,1:3,5:14)]
+
+# Question Performance
+QScore <- function(data) {
+  qscore <- 0
+  for(i in 1:ncol(data)){
+    qscore[i] <- sum(as.character(data[1,i]) == data[-1,i]) / (nrow(data) - 1)
+  }
+  return(qscore)
+}
+
+QscA <- QScore(FormA)
+QscB <- QScore(FormB)
+
+# Section B
+QtblA <- cbind("A",1:(ncol(FormA)-1),QscA[-1])
+QtblB <- cbind("B",1:(ncol(FormB)-1),QscB[-1])
+Qtbl <- rbind(QtblA, QtblB)
+colnames(Qtbl) <- c("Form","Question","Percentage")
+Qtbl <- tbl_df(Qtbl)
+
+Qtbl2 <- rbind(QtblA, QtblB)
+Qtbl2 <- Qtbl[,c(3,1,2)]
+Qtbl2 <- arrange(Qtbl2, Percentage)
+
+Qtbl$Percentage <- as.numeric(Qtbl$Percentage)
+Qtbl$Percentage <- sprintf("%1.1f%%", 100*Qtbl$Percentage)
+Qtbl2$Percentage <- as.numeric(Qtbl2$Percentage)
+Qtbl2$Percentage <- sprintf("%1.1f%%", 100*Qtbl2$Percentage)
+
+# Tables and Plots
+ktbl1 <- kable(tbl1, longtable = TRUE)
+ktbl2 <- kable(tbl2)
+box <- boxplot.matrix(rbind(DomainPerA[-1,], DomainPerB[-1,]),
+               xlab = "Domain",
+               ylab = "Percentage",
+               main = "Domain Performance")
+
+kQtbl <- kable(Qtbl)
+kQtbl2 <- kable(Qtbl2)
+```
+
+xTable
+```{r}
+library(xtable)
+
+
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```

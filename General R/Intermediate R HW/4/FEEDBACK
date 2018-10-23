@@ -1,0 +1,10 @@
+Part A: Function works great! (10)
+
+Part B: Looks good! Include C.I. where appropriate (10)
+
+Part C: Make sure to include your estimates and confidence intervals when you 
+summarize your results. Looks good though! (9.5)
+
+Part D: Avoid repeating too many times. Create a function or use sapply to do
+this. Also, don't forget that power increases with sample size. (9)
+
