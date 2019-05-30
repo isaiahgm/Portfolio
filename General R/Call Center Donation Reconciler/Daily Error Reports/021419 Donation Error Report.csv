@@ -1,0 +1,6 @@
+ResultType,ID,SpouseID,FirstName,LastName,Amount,Designation,DonationType,Source,Employee,DonationID
+No Match,13445311,13445311,Jaden,Wells,10,30120403,OneTime,LDSP,na,30
+Inconsistent Designation,10564239,10564239,Maria,Russo,5,30109053,OneTime,CC,NA,9
+Inconsistent Designation,10564239,10564239,Maria,Russo,5,30113016,OneTime,LDSP,na,9
+Inconsistent Designation,9524207,11437001,Mary,Mason,40,30120178,OneTime,CC,NA,11
+Inconsistent Designation,11437001,11437001,Mary,Mason,40,30102046,OneTime,LDSP,na,11
