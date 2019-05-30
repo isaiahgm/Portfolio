@@ -1,0 +1,171 @@
+---
+title: "Morgan Exam 1"
+author: "Isaiah Morgan"
+date: "February 24, 2018"
+output: word_document
+---
+
+```{r}
+#1
+CornYield <- read.table('C:/Users/imoe9/Documents/School Work/STAT PROG/R Files/STAT 330/Exam 1/CornYield.txt', header = TRUE)
+plot(CornYield$Rainfall, CornYield$CornYield)
+
+#2
+fitcy <- lm(CornYield$CornYield ~ CornYield$Rainfall)
+coef(fitcy)
+```
+
+```{r}
+#3 Yes, I would reject the null hypothesis that the slope of the line is equal to zero because the p-value is equal to 0.00134
+summary(fitcy)
+
+#4
+plot(CornYield$Rainfall, CornYield$CornYield)
+abline(coef(fitcy))
+
+#5
+plot(fitcy, which = 1)
+
+#6
+c4 <- cbind(1,4)
+bhat <- coef(fitcy)
+c4%*%bhat
+
+#7
+vhatbhat <- vcov(fitcy)
+
+uci <- c4%*%bhat + qt(.975,493)*sqrt(c4%*%vhatbhat%*%t(c4))
+lci <- c4%*%bhat - qt(.975,493)*sqrt(c4%*%vhatbhat%*%t(c4))
+c(lci,c4%*%bhat,uci)
+
+#8
+s2hat <- 12.68^2
+
+upi <- c4%*%bhat + qt(.975,493)*sqrt(c4%*%vhatbhat%*%t(c4) + s2hat)
+lpi <- c4%*%bhat - qt(.975,493)*sqrt(c4%*%vhatbhat%*%t(c4) + s2hat)
+c(lpi,c4%*%bhat,upi)
+```
+
+```{r}
+#9
+rm(list=ls())
+Cancer <- read.table('C:/Users/imoe9/Documents/School Work/STAT PROG/R Files/STAT 330/Exam 1/cancer.txt', header = TRUE)
+plot(Cancer$cost,Cancer$benefit)
+
+#10
+fit <- lm(Cancer$benefit~Cancer$cost)
+abline(coef(fit))
+
+#11 If hii > 4/n
+
+#12
+abs(hatvalues(fit)) > 4/ length(hatvalues(fit))
+
+#13
+rstudent(fit)
+
+#14 Drugs 5 and 11 are both potential outliers because they are greater than 2.
+
+#15 If Cook's distance exceeds 4/(n-2), it is potentially an outlier.
+
+#16 None of the points are flagged by this test.
+cooks.distance(fit) > (4/9)
+
+#17 None of the points are flagged by this test
+pf(cooks.distance(fit),1,9) > .5
+
+#18 Both Point 5 and 11 have a Cook's Distance that is significantly greater than the rest
+plot(cooks.distance(fit))
+
+#19 These points don't appear to be as much as outliers as they are high influence points, so the high cook's distance of both is probably more the result of being high inluence. If they were outliers they would have failed more of the diagnostic tests.
+
+#20
+rm(list=ls())
+Salmon <- read.table('C:/Users/imoe9/Documents/School Work/STAT PROG/R Files/STAT 330/Exam 1/salmon.txt', header = TRUE)
+plot(Salmon$spawners, Salmon$recruits)
+
+#21
+fit <- lm(Salmon$recruits ~ Salmon$spawners)
+abline(coef(fit))
+
+#22
+plot(fit, which = 1)
+
+#23 No, though the plot does not have a slope of zero, it doesn't deviate in a way that is overly concerning
+
+#24
+plot(fit, which = 3)
+
+#25 ################## FIXED
+abline(coef(lm(sqrt(abs(rstudent(fit)))~fitted(fit))))
+abline(fit)
+
+```
+```{r}
+#26 The Line is significantly different from zero with a p-value at 0.01839
+summary(fit)
+
+#27 From the Boxcox it is clear that a log transform should be applied to the data to achieve normality as the peak of the curve is approximately zero.
+library(alr3)
+boxCox(fit)
+
+#28 If I were to transform this variable, I would cubic root it as the the powerTransform value is approximately 1/3.
+powerTransform(Salmon$spawners)
+
+#29
+nrecruits <- log(Salmon$recruits)
+nspawners <- sqrt(Salmon$spawners)
+nfit <- lm(nrecruits ~ nspawners)
+coef(nfit)
+
+#30
+plot(nspawners, nrecruits)
+abline(coef(nfit))
+
+#31 Yes, the slope is significantly different from zero at a = 0.05 with a p = 0.0128.
+summary(nfit)
+
+#32
+plot(fitted(nfit),rstudent(nfit))
+
+#33
+abline(h=0, lty = 2)
+
+#34
+plot(fitted(nfit),sqrt(abs(rstandard(nfit))))
+
+#35
+plot(nfit, which = 3)
+
+#36 Yes, there is sufficient evidence to conclude that the slope of the line is not equal to zero.
+
+#37
+plot(nspawners, nrecruits)
+abline(coef(nfit))
+bhat <- coef(nfit)
+vhatbhat <- vcov(nfit)
+
+xx <- seq(12,42,by=2)
+newxx <- cbind(1,xx)
+
+uci <- newxx%*%bhat + qt(.975,14)*sqrt(diag(newxx%*%vhatbhat%*%t(newxx)))
+lci <- newxx%*%bhat - qt(.975,14)*sqrt(diag(newxx%*%vhatbhat%*%t(newxx)))
+
+lines(xx,uci,col='red')
+lines(xx,lci,col='red')
+
+#38
+s2hat <- .4432^2
+
+upi <- newxx%*%bhat + qt(.975,493)*sqrt(diag(newxx%*%vhatbhat%*%t(newxx)) + s2hat)
+lpi <- newxx%*%bhat - qt(.975,493)*sqrt(diag(newxx%*%vhatbhat%*%t(newxx)) + s2hat)
+
+plot(nspawners, nrecruits)
+abline(coef(nfit))
+lines(xx,upi,col='blue')
+lines(xx,lpi,col='blue')
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
