@@ -1,0 +1,267 @@
+---
+title: "Winter 2019 Telefund Calling Time Analysis"
+author: "Isaiah Morgan"
+date: "May 2019"
+output: pdf_document
+---
+
+This summary report aims to provide in depth analysis in several previously unmeasured areas for improving efficiency at the Provo Telefund. The data for this report comes from a Reports Plus data export of every project called for the year 2018 excluding only pledge reminders and thank-you calls. This includes all BYU, BYU-H, and LDSBC projects as well as misc. projects such as student and employee giving, alumni chapters, friends of BYU, and the Law and Business schools calling campaigns.
+
+Overall, the questions and data presented in this report are highly complex. Answering any of them is a serious commitment. The purpose of this report is generate discussion about which areas Telefund management want to learn more about, so that the Telefund Data Analyst and Data committee can prioritize the most important questions.
+```{r global_options, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, comment = "")
+library(tidyverse)
+library(stringr)
+library(lubridate)
+library(RColorBrewer)
+```
+
+```{r data_import, include = FALSE}
+# NOTE: DO NOT SAVE THESE REPORT CSVs IN EXCEL. IT WILL CORRUPT THE DATE COLUMN AND THAT DATA WILL BE LOST
+Talkdata <- read_csv("~/Data Assistant Files/Projects/Talk Time Analysis/Talk Time Gatherer W2019.csv") %>%
+  filter(RESULT_CODE != "RESULT_CODE")
+
+Amountdata <- read_csv("~/Data Assistant Files/Projects/Talk Time Analysis/(AmountSum) Amount Report W2019.csv") %>%
+    filter(RESULT_CODE != "RESULT_CODE")
+```
+
+```{r data_manipulation}
+# FIXME:
+# DonationDataA <- Amountdata %>%
+#   mutate_at("LAST_CALL_DATE", .funs=~as.numeric(as.factor(as.Date(.)))) %>% # series of mutations to make the date column be for each day of calling this segment
+#   mutate_at("LAST_CALL_DATE", .funs=(LAST_CALL_DATE - min(LAST_CALL_DATE[str_detect(SEGMENT_GROUP, "GOLD A")]) + 1)) %>%
+#   filter(RESULT_CODE == "Spec Pldg") %>%
+#   filter(str_detect(SEGMENT_GROUP, "GOLD A")) %>%
+#   select(c(1:3,5:7)) 
+
+dayofWeek_data <- Amountdata %>% # Dataset to examine which days raise more
+  mutate_at(c(1,2), .funs=as.character) %>%
+  mutate_at(3, .funs=as.Date) %>%
+  mutate_at(c(5,6), .funs=as.numeric) %>%
+  mutate(DAY_OF_WEEK = weekdays(LAST_CALL_DATE)) %>%
+  mutate_at(c("RESULT_CODE","DAY_OF_WEEK"), .funs=as.factor) %>%
+  filter(DAY_OF_WEEK != "Monday") %>%
+  mutate(PLEDGE_AMOUNT = replace_na(PLEDGE_AMOUNT, 0))
+levels(dayofWeek_data$RESULT_CODE) <- list(Incomplete = c('Ans Machin','Block','Busy','Callback','Callback2','Day','DIAL_NVP',
+                                                          'Disconnect','Fax','NAO','NAT','No Answer','No Attempt','Wrong Num'),
+                                           Complete = c('Already Pl','Deceased','Other','Message','Moved','Mission'),
+                                           Donation = 'Spec Pldg',
+                                           Refusal = c('Drop','No Pledge')) 
+dayofWeek_data$DAY_OF_WEEK <- ordered(dayofWeek_data$DAY_OF_WEEK, levels = c('Tuesday','Wednesday','Thursday',
+                                                                            'Friday','Saturday')) 
+
+daytime_data <- Amountdata %>% # Dataset to examine which days raise more
+  mutate_at(c(1,2), .funs=(as.character)) %>%
+  mutate(Time = as.POSIXct(strftime(as.character(Amountdata$LAST_CALL_DATE), format="%H:%M:%S"), format="%H:%M:%S")) %>%
+  mutate_at(3, .funs=(as.Date)) %>%
+  mutate(DAY_OF_WEEK = weekdays(LAST_CALL_DATE)) %>%
+  mutate_at(9, .funs=(as.factor)) %>%
+  filter(DAY_OF_WEEK != "Monday") %>%
+  mutate_at(c(5,6), .funs=(as.numeric))
+levels(daytime_data$RESULT_CODE) <- list(Incomplete = c('Ans Machin','Block','Busy','Callback','Callback2','Day','DIAL_NVP',
+                                                        'Disconnect','Fax','NAO','NAT','No Answer','No Attempt','Wrong Num'),
+                                         Complete = c('Already Pl','Deceased','Other','Message','Moved','Mission'),
+                                         Donation = 'Spec Pldg',
+                                         Refusal = c('Drop','No Pledge')) 
+daytime_data$DAY_OF_WEEK <- ordered(daytime_data$DAY_OF_WEEK, levels = c('Tuesday','Wednesday','Thursday','Friday','Saturday'))
+```
+
+## Length of Call Analysis  
+Is there a point where a caller spends too long on a phone call? Does the efficacy of rapport and negotiation decrease the longer the caller is on the phone with the prospect? Is there an optimal length of a phone call? Can the length of a call be used to predict caller avoidance if a caller is consistently having only short calls? 
+
+The below chart measures participation rate over the length of a phone call with talk time on the x-axis and participation on the y-axis. Participation is measured as the proportion of calls that ended in donation over calls that ended in refusal.
+
+```{r length_of_call_plots}
+donationratetime <- sapply(c(1:40), function(x) {sum(Talkdata[Talkdata$TALK_TIME <= 30*x, 5] == 'Spec Pldg')}) / 
+                    sapply(c(1:40), function(x) {nrow(Talkdata[Talkdata$TALK_TIME <= 30*x, 5])})
+names(donationratetime) <- seq(from = .5, to = 20, by = .5)
+donationratetime <- cbind(seq(from = .5, to = 20, by = .5), donationratetime)
+
+plot(x = donationratetime[,1], y = donationratetime[,2], type = 'l', lwd = 4, col = 'lightblue', xlab = "Talk Time (minutes)",
+     main = "Donation Rate over Time", ylab = "Donation Rate", col.main = 'gray20', col.lab = 'gray20', 
+     fg = 'gray40', xaxp = c(0, 40, 10))
+```
+  
+
+This chart suggests that the length of a phone call is related to the outcome. While this result is significant for both short and long calls, it is especially important to note that the vast majority of donations do not come instantaneously  but after some time and effort on the phone.  
+This result suggests that Telefund management should push employees to negotiate more rather than less. At certain point around 11 minutes the benefit of negotiation and rapport evaporates leading to a decreased participation rate. The following chart further demonstrates this by plotting the likelihood of a donation outcome compared to likelihood of a refusal outcome.
+
+```{r length_of_call_plots_2}
+plot(density(unlist(Talkdata[Talkdata$RESULT_CODE == 'Spec Pldg', 7])/60), col = 'lightblue', lwd = 3, lty = 5 , xlab = "Talk Time (minutes)",
+     main = "Outcome Likelihood by Call Time", ylab = "Likelihood of Outcome", col.main = 'gray20', col.lab = 'gray20', 
+     fg = 'gray40', xaxp = c(0, 20, 10) , xlim = c(0,20), yaxt = "n")
+lines(density(unlist(Talkdata[Talkdata$RESULT_CODE != 'Spec Pldg', 7])/60), col = 'pink', lwd = 3, lty = 9)
+legend(16,.13, c('Donation','Refusal'), col = c('lightblue','pink'), lty = c(2,9), lwd = 3)
+#abline(v = mean(unlist(Talkdata[Talkdata$RESULT_CODE == 'Spec Pldg', 7])/60), col = 'lightblue', lwd = 3, lty = 5)
+#abline(v = mean(unlist(Talkdata[Talkdata$RESULT_CODE != 'Spec Pldg', 7])/60), col = 'pink', lwd = 3, lty = 9)
+```
+  
+The peaks in the chart tell us when the majority of the said outcome will occur. For example most donation calls will be between 4 and 8 minutes in length, but few calls will be more than 12 minutes in length (especially those that end in donation). 
+
+```{r t_tests_on_means, include = FALSE}
+# Statisical test on the mean talk time for a donation compared to the time for a refusal result.
+# A 2-sample t-test to see if the means of donation set and all other outcome set are signficantly different from each other 
+# Checking if variance are equal. Ratio less that 2 is acceptable
+# sd(unlist(Talkdata[Talkdata$RESULT_CODE != 'Spec Pldg', 7])) / sd(unlist(Talkdata[Talkdata$RESULT_CODE == 'Spec Pldg', 7]))
+# 1.40092 => checks out
+
+# Test
+Talk_time_Pledges <- unlist(Talkdata[Talkdata$RESULT_CODE == 'Spec Pldg', 7])
+Talk_time_Refusals <- unlist(Talkdata[Talkdata$RESULT_CODE != 'Spec Pldg', 7])
+t.test(Talk_time_Refusals,Talk_time_Pledges)
+# The means of the donation set and other outcome set are significantly different with refusal outcomes typically lasting 20
+# seconds longer.
+# This test confirms that calls that end in refusal are typically 20 seconds longer than calls that end in donation. (95% CI: 15,24).
+```
+
+## Calling Campaign Duration Analysis  
+The current policy at the Telefund is to limit calling campaigns to either 2 weeks or 10 attempts. Is this the most effective policy? The chart below is an initial exploratory analysis. Before making a conclusion, further research is necessary to tease out the differences between long and short term calling lists (i.e. prospective lists that are called for longer periods and repeat donor lists that are only called for two weeks but have fewer members).
+
+With that said, these charts still offer some valuable insight into donor response rate. The first plot indicates that the response rate declines rapidly after the first attempt. After about the 5th attempt, 95% of the people who will respond have already responded. Only a few more people respond after 7 attempts and as the following plot demonstrates, their response quickly becomes more negative.
+
+```{r attempts_plots}
+ggplot(data = Talkdata, aes(x = ATTEMPTS, fill = RESULT_CODE)) +
+  geom_bar(alpha = 1, size = .25, col='gray50', width = .9) +
+  labs(title = "Number of Attempts before a Complete Outcome", x = 'Attempt Number', y = 'Number of Contacts', col = 'gray') +
+  theme_minimal() +
+  theme(axis.line = element_line(linetype = 'blank'), panel.background = element_blank(), plot.title = element_text(hjust = .5)) +
+  scale_fill_brewer(palette = "Pastel1", limits=c('No Pledge','Already Pl','Spec Pldg','Drop','Other'), 
+                    labels=c('Refusal','Already Cont.','Donation','Drop','Other'), name = 'Result') 
+# CREATE A CDF STYLE GRAPH
+att_den <- density(Talkdata$ATTEMPTS, adjust = 1, from = min(Talkdata$ATTEMPTS), to = max(Talkdata$ATTEMPTS))
+att_den <- data.frame(x=att_den$x, y=att_den$y)
+ggplot(data = Talkdata, aes(x = ATTEMPTS)) +
+  geom_line(data=att_den, aes(x=x, y=cumsum(y)/sum(y)), size=2, colour='lightblue') +
+  labs(title = "Percentage Complete Response by Attempt", x = 'Attempt Number', y = 'Percentage Contacted', col = 'gray') +
+  theme_minimal() +
+  theme(axis.line = element_line(linetype = 'blank'), panel.background = element_blank(), plot.title = element_text(hjust = .5)) +
+  geom_hline(yintercept = .95, col = 'lightcoral', linetype = 'dashed', size = 1.2) +
+  geom_text(aes(2,.95,label = "95% Response", vjust = 1.3))
+```
+
+This third plot follows the participation rate at each number of attempts. Other than the hiccup at the 2nd and 3rd attempts the chart follows a parabolic curve that begins to decline sharply after the seventh attempt. Altogether these plots indicate that the Telefund should limit the amount of time spent on lists so that prospects are not contacted more than seven times. This action can allow the Telefund to spend more time on a greater variety of lists instead of bleeding the same lists dry.
+
+```{r attempts_plots2}
+# This attempts plot looks at p-rate at each attempt
+Attempts_Participation <- Talkdata %>%
+  group_by(ATTEMPTS) %>%
+  mutate_at(5, .funs=(as.character))
+Attempts_Participation$RESULT_CODE[Attempts_Participation$RESULT_CODE != "Spec Pldg"] <- FALSE 
+Attempts_Participation$RESULT_CODE[Attempts_Participation$RESULT_CODE == "Spec Pldg"] <- TRUE 
+Attempts_Participation <- Attempts_Participation %>%
+  mutate_at(5, .funs=(as.logical)) %>%
+  summarise(Participation = sum(RESULT_CODE) / length(RESULT_CODE))
+
+ggplot(data = Attempts_Participation, aes(x = ATTEMPTS, y = Participation)) +
+  geom_bar(stat = 'identity', col = 'gray50', width = .9, fill = 'lightgoldenrod3') +
+  labs(title = "Participation Rate at each Attempt", x = "Attempt Number", y = "Number of Contacts", col = 'gray') +
+  theme_minimal() +
+  theme(axis.line = element_line(linetype = 'blank'), panel.background = element_blank(), plot.title = element_text(hjust = .5)) 
+```
+
+## Weekly and Daily Response Analysis  
+Are certain days of the week or hours of the day better for receiving donations? Are donors more likely to answer the phone and different times of the day?
+
+The first question is explored somewhat in the below charts, but the second is more difficult to ascertain and represent. The first chart looks at the number of contacts made per day of the week for the entire year. It looks good, but the deviations in the days are likely the result of varying amounts of callers working on each day (i.e. Friday is the lowest likely because few callers consistently work it).
+
+The second chart demonstrates that no day of the week has a significantly different participation rate than another. With this in mind, examining which shifts are most effective becomes more straight forward. The last two charts look at participation rate over the different shifts: one for the weekday shifts and the other for Saturday shifts. The only truly notable result from this initial analysis is the comparative ineffectiveness of early weekday shifts.
+
+From this portion of the analysis, I would recommend that early weekday shifts remain closed unless the other shifts are consistently filled.  
+
+```{r amount_raised_analysis_numbered_days, include = FALSE}
+# AmountRaised_BYUGOLDA <- DonationDataA %>%
+#   group_by(LAST_CALL_DATE) %>%
+#   summarise(SUM = sum(PLEDGE_AMOUNT))
+# 
+# ggplot(data = AmountRaised_BYUGOLDA, aes(x = LAST_CALL_DATE, y = SUM)) +
+#   geom_bar(alpha = .8, stat = "identity")
+```
+
+```{r day_of_week_analysis}
+#Filtered Data
+dayofWeek_data_r_d <- dayofWeek_data %>%
+  filter(RESULT_CODE %in% c("Donation","Refusal")) 
+
+dayofWeek_data_p <- dayofWeek_data %>%
+  filter(RESULT_CODE %in% c("Donation","Refusal")) %>%
+  group_by(DAY_OF_WEEK) %>%
+  summarise(P_RATE = sum(RESULT_CODE == "Donation") / length(RESULT_CODE))
+
+#This plot looks at all results
+#ggplot(data = dayofWeek_data, aes(x = DAY_OF_WEEK, fill = RESULT_CODE)) +
+#  geom_bar()
+
+#This plot looks at just refusals to donations
+ggplot(data = dayofWeek_data_r_d, aes(x = DAY_OF_WEEK, fill = RESULT_CODE)) +
+  geom_bar(alpha = 1, size = .25, col='gray50', width = .9) +
+  labs(title = "Donations and Refusals Daily", x = 'Day of the Week', y = 'Results', col = 'gray', fill = "Result Key") +
+  theme_minimal() +
+  theme(axis.line = element_line(linetype = 'blank'), panel.background = element_blank(), plot.title = element_text(hjust = .5))+
+  scale_fill_brewer(palette = "Pastel2")
+
+#This plot looks at amount per day
+#ggplot(data = dayofWeek_data, aes(x = DAY_OF_WEEK, y = PLEDGE_AMOUNT)) +
+#  geom_bar(stat = "identity", alpha = 1, size = .25, col='gray50', fill='aquamarine4', width = .9) +
+#  labs(title = "Daily Amount Raised", x = 'Day of the Week', y = 'Amount Raised ($)', col = 'gray') +
+#  theme_minimal() +
+#  theme(axis.line = element_line(linetype = 'blank'), panel.background = element_blank(), plot.title = element_text(hjust = .5))
+
+#This plot looks at Participation on different days
+ggplot(data = dayofWeek_data_p, aes(x = DAY_OF_WEEK, y = P_RATE)) +
+  geom_bar(stat = "identity", alpha = 1, size = .25, col='gray50', fill='aquamarine4', width = .9) +
+  labs(title = "Daily Particpation Rate", x = 'Day of the Week', y = 'P-Rate', col = 'gray') +
+  theme_minimal() +
+  theme(axis.line = element_line(linetype = 'blank'), panel.background = element_blank(), plot.title = element_text(hjust = .5))
+```
+
+```{r time_of_day_analysis, include=FALSE, echo=FALSE}
+## First only examine weekdays (b/c it is easier and makes more sense)
+weekday_time_data <- daytime_data %>%
+  filter(DAY_OF_WEEK != "Saturday")
+
+# Create a sequence of dates by which to break the data into pieces
+dates <- seq(as.POSIXct(paste(Sys.Date(), "14:30:00")),
+             as.POSIXct(paste(Sys.Date(), "22:30:00")),
+             by = 60*60*2)
+# Create a column to indicate which shift the result came from
+weekday_time_data <- cbind(weekday_time_data, Shift =
+  cut(weekday_time_data$Time, breaks = dates, labels = c('Early Shift','First Shift','Second Shift','Power Hour')))
+
+# Find P-Rate by shift
+weekday_tdata_p <- weekday_time_data %>%
+  filter(RESULT_CODE %in% c("Donation","Refusal")) %>%
+  filter(!is.na(Shift)) %>%
+  group_by(Shift) %>%
+  summarise(P_RATE = sum(RESULT_CODE == "Donation") / length(RESULT_CODE))
+
+ggplot(data = weekday_tdata_p, aes(x = Shift, y = P_RATE)) +
+  geom_bar(stat = "identity", alpha = 1, size = .25, col='gray50', fill='aquamarine4', width = .9) +
+  labs(title = "Particpation Rate in Each Shift (Excluding Saturday)", x = 'Shift', y = 'P-Rate', col = 'gray') +
+  theme_minimal() +
+  theme(axis.line = element_line(linetype = 'blank'), panel.background = element_blank(), plot.title = element_text(hjust = .5))
+
+## Second examine Saturday
+saturday_time_data <- daytime_data %>%
+  filter(DAY_OF_WEEK == "Saturday")
+
+# Create a sequence of dates by which to break the data into pieces
+sat_dates <- seq(as.POSIXct(paste(Sys.Date(), "09:00:00")),
+             as.POSIXct(paste(Sys.Date(), "17:00:00")),
+             by = 60*60*2)
+# Create a column to indicate which shift the result came from
+saturday_time_data <- cbind(saturday_time_data, Shift =
+  cut(saturday_time_data$Time, breaks = sat_dates, labels = c('Early Shift','First Shift','Second Shift','Power Hour')))
+
+# Find P-Rate by shift
+sat_tdata_p <- saturday_time_data %>%
+  filter(RESULT_CODE %in% c("Donation","Refusal")) %>%
+  filter(!is.na(Shift)) %>%
+  group_by(Shift) %>%
+  summarise(P_RATE = sum(RESULT_CODE == "Donation") / length(RESULT_CODE))
+
+ggplot(data = sat_tdata_p, aes(x = Shift, y = P_RATE)) +
+  geom_bar(stat = "identity", alpha = 1, size = .25, col='gray50', fill='aquamarine4', width = .9) +
+  labs(title = "Particpation Rate in Each Shift (Saturday)", x = 'Shift', y = 'P-Rate', col = 'gray') +
+  theme_minimal() +
+  theme(axis.line = element_line(linetype = 'blank'), panel.background = element_blank(), plot.title = element_text(hjust = .5))
+```
